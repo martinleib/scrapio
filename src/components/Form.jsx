@@ -23,10 +23,8 @@ export default function Form() {
         let completed = 0;
 
         try {
-            // Create a folder for the artist
             const folder = zip.folder("releases");
             
-            // Download each image and add to zip
             for (const release of releases) {
                 try {
                     const response = await fetch(release.imageUrl);
@@ -48,7 +46,6 @@ export default function Form() {
                 }
             }
 
-            // Generate and download the zip file
             const content = await zip.generateAsync({ type: "blob" });
             const url = window.URL.createObjectURL(content);
             const link = document.createElement('a');
@@ -162,8 +159,8 @@ export default function Form() {
             >
                 <Download className="mr-2" /> 
                 {loading 
-                    ? `Downloading... ${downloadProgress}%` 
-                    : 'Download All Images'
+                    ? `downloading... ${downloadProgress}%`
+                    : 'download all images'
                 }
             </Button>
         </form>
