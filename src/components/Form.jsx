@@ -63,7 +63,7 @@ export default function Form() {
     return (
         <div className="flex flex-col items-center justify-center flex-1 w-full p-4 md:p-24">
             <form 
-                className="w-full max-w-[95%] md:max-w-md space-y-4"
+                className="w-full max-w-[95%] md:max-w-md space-y-2"
                 onSubmit={handleSubmit}
             >
                 <div className="flex items-center gap-2 w-full">
@@ -110,6 +110,20 @@ export default function Form() {
                         ? `downloading... ${downloadProgress}%`
                         : 'download all images'
                     }
+                </Button>
+
+                <Button 
+                    className="w-full" 
+                    variant="outline"
+                    type="button"
+                    disabled="disabled"
+                >
+                    {/* <Download className="mr-2" /> 
+                    {loading 
+                        ? `downloading... ${downloadProgress}%`
+                        : 'download releases info'
+                    } */}
+                    <Download className="mr-2" />download releases info
                 </Button>
             </form>
         </div>

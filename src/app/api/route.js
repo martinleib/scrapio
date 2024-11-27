@@ -44,7 +44,8 @@ async function getArtistReleases(accessToken, artistUrl) {
             const data = await response.json();
             allReleases = [...allReleases, ...data.items];
             
-            // Get next page URL if it exists
+            // busca la siguiente página si existe
+            // previamente solo levantaba los primeros 50 releases
             url = data.next;
         }
         
@@ -82,7 +83,8 @@ export async function POST(request) {
             );
         }
 
-        // Check if environment variables are present
+        // revisa si las variables de entorno están definidas
+        // previamente explotaba TODO
         if (!CLIENT_ID || !CLIENT_SECRET) {
             console.error('Missing environment variables:', {
                 hasClientId: !!CLIENT_ID,
@@ -101,7 +103,7 @@ export async function POST(request) {
         const artistInfo = await getArtistInfo(accessToken, artistId);
         
         const formattedReleases = releases.map(release => ({
-            name: release.name.replace(/[/\\?%*:|"<>]/g, '-'), // sanitize filename
+            name: release.name.replace(/[/\\?%*:|"<>]/g, '-'),
             imageUrl: release.images[0]?.url,
             releaseDate: release.release_date,
             type: release.album_type,
