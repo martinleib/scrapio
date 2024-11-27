@@ -26,21 +26,29 @@ async function getAccessToken() {
 async function getArtistReleases(accessToken, artistUrl) {
     try {
         const artistId = artistUrl.split('/artist/')[1].split('?')[0];
+        let allReleases = [];
+        let url = `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album,single`;
         
-        const response = await fetch(
-            `https://api.spotify.com/v1/artists/${artistId}/albums?limit=50&include_groups=album,single`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
+        while (url) {
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            
+            if (!response.ok) {
+                const error = await response.text();
+                throw new Error(`Failed to fetch artist releases: ${error}`);
             }
-        });
-        
-        if (!response.ok) {
-            const error = await response.text();
-            throw new Error(`Failed to fetch artist releases: ${error}`);
+            
+            const data = await response.json();
+            allReleases = [...allReleases, ...data.items];
+            
+            // Get next page URL if it exists
+            url = data.next;
         }
         
-        const data = await response.json();
-        return data.items;
+        return allReleases;
     } catch (error) {
         console.error('Error in getArtistReleases:', error);
         throw error;
@@ -74,6 +82,7 @@ export async function POST(request) {
             );
         }
 
+        // Check if environment variables are present
         if (!CLIENT_ID || !CLIENT_SECRET) {
             console.error('Missing environment variables:', {
                 hasClientId: !!CLIENT_ID,
