@@ -1,4 +1,5 @@
 import localFont from "next/font/local";
+import { Toaster } from "@/components/ui/toaster"
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "./globals.css";
@@ -22,9 +23,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} dark bg-zinc-950 text-zinc-50 antialiased flex flex-col min-h-screen`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} dark bg-zinc-950 text-zinc-50 lowercase antialiased flex flex-col min-h-screen`}>
         <Header />
         {children}
+        <Toaster />
         <Footer />
       </body>
     </html>
