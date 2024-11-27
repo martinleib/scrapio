@@ -113,9 +113,9 @@ export default function Form() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center flex-1 p-4 sm:p-24">
+        <div className="flex flex-col items-center justify-center min-h-[100dvh] w-full py-8 px-4 md:p-24">
             <form 
-                className="w-full max-w-md space-y-4"
+                className="w-full max-w-[95%] md:max-w-md space-y-4"
                 onSubmit={handleSubmit}
             >
             <div className="flex items-center gap-2 w-full">
