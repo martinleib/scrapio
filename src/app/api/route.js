@@ -15,7 +15,8 @@ async function getAccessToken() {
     });
     
     if (!response.ok) {
-        throw new Error('Failed to get access token');
+        const error = await response.text();
+        throw new Error(`Failed to get access token: ${error}`);
     }
     
     const data = await response.json();
@@ -34,7 +35,8 @@ async function getArtistReleases(accessToken, artistUrl) {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to fetch artist releases');
+            const error = await response.text();
+            throw new Error(`Failed to fetch artist releases: ${error}`);
         }
         
         const data = await response.json();
@@ -54,7 +56,8 @@ async function getArtistInfo(accessToken, artistId) {
     });
     
     if (!response.ok) {
-        throw new Error('Failed to fetch artist info');
+        const error = await response.text();
+        throw new Error(`Failed to fetch artist info: ${error}`);
     }
     
     return await response.json();
@@ -68,6 +71,17 @@ export async function POST(request) {
             return NextResponse.json(
                 { error: 'Artist URL is required' },
                 { status: 400 }
+            );
+        }
+
+        if (!CLIENT_ID || !CLIENT_SECRET) {
+            console.error('Missing environment variables:', {
+                hasClientId: !!CLIENT_ID,
+                hasClientSecret: !!CLIENT_SECRET
+            });
+            return NextResponse.json(
+                { error: 'Missing Spotify API credentials' },
+                { status: 500 }
             );
         }
 
@@ -92,9 +106,13 @@ export async function POST(request) {
         });
         
     } catch (error) {
-        console.error('API Error:', error);
+        console.error('API Error:', {
+            message: error.message,
+            stack: error.stack,
+            url: artistUrl
+        });
         return NextResponse.json(
-            { error: 'Failed to fetch artist releases' },
+            { error: `Failed to fetch artist releases: ${error.message}` },
             { status: 500 }
         );
     }
