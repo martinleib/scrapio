@@ -111,20 +111,6 @@ export default function Form() {
                         : 'download all images'
                     }
                 </Button>
-
-                <Button 
-                    className="w-full" 
-                    variant="outline"
-                    type="button"
-                    disabled="disabled"
-                >
-                    {/* <Download className="mr-2" /> 
-                    {loading 
-                        ? `downloading... ${downloadProgress}%`
-                        : 'download releases info'
-                    } */}
-                    <Download className="mr-2" />download releases info
-                </Button>
             </form>
         </div>
     );
